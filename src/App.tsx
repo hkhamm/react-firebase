@@ -1,8 +1,8 @@
-import { observer } from 'mobx-react'
-import * as React from 'react'
-import './App.css'
+import { observer } from "mobx-react"
+import * as React from "react"
+import "./App.css"
 
-import { AppStore } from './store'
+import { AppStore } from "./store"
 
 interface Props {
     store: AppStore
@@ -15,7 +15,7 @@ export default class App extends React.Component<Props, {}> {
         return (
             <div>
                 <label>Count {this.props.store.count}</label>
-                <button onClick={() => this.props.store.count++}>Increment</button>
+                <button id={"increment"} onClick={() => this.props.store.count++}>Increment</button>
             </div>
         )
     }
