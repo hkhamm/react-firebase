@@ -1,22 +1,23 @@
-import * as React from 'react';
-import './App.css';
+import { observer } from 'mobx-react'
+import * as React from 'react'
+import './App.css'
 
-import logo from './logo.svg';
+import { AppStore } from './store'
 
-class App extends React.Component {
-  public render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+interface Props {
+    store: AppStore
 }
 
-export default App;
+@observer
+export default class App extends React.Component<Props, {}> {
+
+    public render() {
+        return (
+            <div>
+                <label>Count {this.props.store.count}</label>
+                <button onClick={() => this.props.store.count++}>Increment</button>
+            </div>
+        )
+    }
+
+}
