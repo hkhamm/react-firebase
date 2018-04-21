@@ -13,9 +13,7 @@ export class AppStore {
     @observable public count: number = 0
 
     constructor() {
-
         firebase.initializeApp(config)
-
         const firestore: Firestore = firebase.firestore()
         const database: DocumentReference = firestore.collection("default").doc("default")
         database.get().then((snapshot: DocumentSnapshot) => {
