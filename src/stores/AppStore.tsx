@@ -2,6 +2,8 @@ import * as firebase from "firebase"
 import "firebase/firestore"
 import { autorun, observable } from "mobx"
 
+import { apiKey } from "../config"
+
 type Firestore = firebase.firestore.Firestore
 type DocumentSnapshot = firebase.firestore.DocumentSnapshot
 type DocumentReference = firebase.firestore.DocumentReference
@@ -11,8 +13,9 @@ export class AppStore {
     @observable public count: number = 0
 
     constructor() {
+
         firebase.initializeApp({
-            apiKey: "AIzaSyDqVtgc9Dq1EF2HjQRv3iJnSmQTYEixN_Q",
+            apiKey,
             authDomain: "hello-react-f7f06.firebaseapp.com",
             projectId: "hello-react-f7f06"
         })
