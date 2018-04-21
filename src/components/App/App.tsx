@@ -2,7 +2,7 @@ import { observer } from "mobx-react"
 import * as React from "react"
 import "./App.css"
 
-import { AppStore } from "./store"
+import { AppStore } from "../../stores/AppStore"
 
 interface Props {
     store: AppStore
@@ -11,10 +11,13 @@ interface Props {
 @observer
 export default class App extends React.Component<Props, {}> {
 
+    private store: AppStore
+
     constructor(props: Props) {
         super(props)
-        this.onIncrement = this.onIncrement.bind(this)
-        this.onDecrement = this.onDecrement.bind(this)
+        this.store = props.store
+        this.increment = this.increment.bind(this)
+        this.decrement = this.decrement.bind(this)
     }
 
     public render() {
@@ -28,21 +31,21 @@ export default class App extends React.Component<Props, {}> {
                 alignItems: "center"
             }}>
                 <div>
-                    <label>Count {this.props.store.count}</label>
-                    <div><button onClick={this.onIncrement}>Increment</button></div>
-                    <div><button onClick={this.onDecrement}>Decrement</button></div>
+                    <label>Count {this.store.count}</label>
+                    <div><button onClick={this.increment}>Increment</button></div>
+                    <div><button onClick={this.decrement}>Decrement</button></div>
                 </div>
             </div>
         )
     }
 
-    private onIncrement() {
-        this.props.store.count++
+    private increment() {
+        this.store.count++
     }
 
-    private onDecrement() {
-        if (this.props.store.count > 0) {
-            this.props.store.count--
+    private decrement() {
+        if (this.store.count > 0) {
+            this.store.count--
         }
     }
 

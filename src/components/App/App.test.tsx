@@ -1,7 +1,8 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
+
+import { AppStore } from "../../stores/AppStore"
 import App from "./App"
-import { AppStore } from "./store"
 
 it("renders without crashing", () => {
     const div = document.createElement("div")
