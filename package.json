@@ -1,8 +1,9 @@
 {
-  "name": "hello_react",
+  "name": "react-firebase",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^4.13.1",
     "mobx": "^4.2.0",
     "mobx-react": "^5.0.0",
     "react": "^16.3.2",
@@ -12,6 +13,7 @@
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "deploy": "yarn build; firebase deploy",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
