@@ -2,7 +2,7 @@ import * as firebase from "firebase"
 import "firebase/firestore"
 import { autorun, observable } from "mobx"
 
-import { apiKey } from "../config"
+import { config } from "../config"
 
 type Firestore = firebase.firestore.Firestore
 type DocumentSnapshot = firebase.firestore.DocumentSnapshot
@@ -14,11 +14,7 @@ export class AppStore {
 
     constructor() {
 
-        firebase.initializeApp({
-            apiKey,
-            authDomain: "hello-react-f7f06.firebaseapp.com",
-            projectId: "hello-react-f7f06"
-        })
+        firebase.initializeApp(config)
 
         const firestore: Firestore = firebase.firestore()
         const database: DocumentReference = firestore.collection("default").doc("default")
