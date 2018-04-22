@@ -19,12 +19,7 @@ export default class Counter extends React.Component<ComponentProps, {}> {
         const displayName: string = currentUser && currentUser.displayName ? currentUser.displayName : ""
         return (
             <div>
-                <div style={{
-                    float: "right",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}>
+                <div style={{float: "right"}}>
                     <button onClick={() => firebase.auth().signOut()}>
                         Sign Out {displayName}
                     </button>
