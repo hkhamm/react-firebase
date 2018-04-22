@@ -51,7 +51,7 @@ class Counter extends React.Component<ComponentProps, {}> {
 
     private signOut() {
         firebase.auth().signOut().then(() => {
-            this.props.history!.push("/")
+            this.props.history.push("/")
         })
     }
 
