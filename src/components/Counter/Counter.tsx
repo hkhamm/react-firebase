@@ -4,6 +4,9 @@ import { inject, observer } from "mobx-react"
 import * as React from "react"
 import { withRouter } from "react-router"
 
+import Button from "material-ui/Button"
+import Icon from "material-ui/Icon"
+import IconButton from "material-ui/IconButton"
 import { AppStore } from "../../stores/AppStore"
 import { ComponentProps } from "../../types/types"
 
@@ -27,22 +30,18 @@ class Counter extends React.Component<ComponentProps, {}> {
         return (
             <div>
                 <div style={{float: "right"}}>
-                    <button onClick={this.signOut}>
-                        Sign Out {displayName}
-                    </button>
+                    <Button onClick={this.signOut}>Sign Out {displayName}</Button>
                 </div>
                 <div style={{
-                    width: "50%",
-                    margin: "auto",
                     paddingTop: "2rem",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
                     <div>
+                        <IconButton children={<Icon>remove_circle</Icon>} onClick={this.decrement} />
                         <label>Count {this.store.count}</label>
-                        <div><button onClick={this.increment}>Increment</button></div>
-                        <div><button onClick={this.decrement}>Decrement</button></div>
+                        <IconButton children={<Icon>add_circle</Icon>} onClick={this.increment} />
                     </div>
                 </div>
             </div>
