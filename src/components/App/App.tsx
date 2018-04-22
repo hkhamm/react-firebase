@@ -1,20 +1,24 @@
 import * as firebase from "firebase"
 import { Unsubscribe, User } from "firebase"
-import { observer } from "mobx-react"
+import { inject, observer } from "mobx-react"
 import * as React from "react"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
-import { Route, Switch } from "react-router"
+import { Route, Switch, withRouter } from "react-router"
 
+import { AppStore } from "../../stores/AppStore"
 import { ComponentProps } from "../../types/types"
 import Counter from "../Counter/Counter"
 
+@inject((props: ComponentProps) => ({...props}))
 @observer
-export default class App extends React.Component<ComponentProps, {}> {
+class App extends React.Component<ComponentProps, {}> {
 
     private unregisterAuthObserver: Unsubscribe
+    private store: AppStore
 
     constructor(props: ComponentProps) {
         super(props)
+        this.store = this.props.store!
     }
 
     public render() {
@@ -27,13 +31,11 @@ export default class App extends React.Component<ComponentProps, {}> {
         }
         return (
             <React.Fragment>
-            {!this.props.store.isSignedIn ? (
+            {!this.store.isSignedIn ? (
                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
                 ) : (
                 <Switch>
-                    <Route path="/" component={() => {
-                        return <Counter store={this.props.store} />
-                    }} />
+                    <Route path="/" component={Counter} />
                 </Switch>
             )}
             </React.Fragment>
@@ -43,7 +45,7 @@ export default class App extends React.Component<ComponentProps, {}> {
 
     public componentDidMount() {
         this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-            (user: User) => this.props.store.isSignedIn = !!user
+            (user: User) => this.store.isSignedIn = !!user
         )
     }
 
@@ -52,3 +54,5 @@ export default class App extends React.Component<ComponentProps, {}> {
     }
 
 }
+
+export default withRouter(App)

@@ -1,17 +1,24 @@
 import * as firebase from "firebase"
 import { User } from "firebase"
-import { observer } from "mobx-react"
+import { inject, observer } from "mobx-react"
 import * as React from "react"
+import { withRouter } from "react-router"
 
+import { AppStore } from "../../stores/AppStore"
 import { ComponentProps } from "../../types/types"
 
+@inject((props: ComponentProps) => ({...props}))
 @observer
-export default class Counter extends React.Component<ComponentProps, {}> {
+class Counter extends React.Component<ComponentProps, {}> {
+
+    private store: AppStore
 
     constructor(props: ComponentProps) {
         super(props)
+        this.store = this.props.store!
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
+        this.signOut = this.signOut.bind(this)
     }
 
     public render() {
@@ -20,7 +27,7 @@ export default class Counter extends React.Component<ComponentProps, {}> {
         return (
             <div>
                 <div style={{float: "right"}}>
-                    <button onClick={() => firebase.auth().signOut()}>
+                    <button onClick={this.signOut}>
                         Sign Out {displayName}
                     </button>
                 </div>
@@ -33,7 +40,7 @@ export default class Counter extends React.Component<ComponentProps, {}> {
                     alignItems: "center"
                 }}>
                     <div>
-                        <label>Count {this.props.store.count}</label>
+                        <label>Count {this.store.count}</label>
                         <div><button onClick={this.increment}>Increment</button></div>
                         <div><button onClick={this.decrement}>Decrement</button></div>
                     </div>
@@ -42,14 +49,22 @@ export default class Counter extends React.Component<ComponentProps, {}> {
         )
     }
 
+    private signOut() {
+        firebase.auth().signOut().then(() => {
+            this.props.history!.push("/")
+        })
+    }
+
     private increment() {
-        this.props.store.count++
+        this.store.count++
     }
 
     private decrement() {
-        if (this.props.store.count > 0) {
-            this.props.store.count--
+        if (this.store.count > 0) {
+            this.store.count--
         }
     }
 
 }
+
+export default withRouter(Counter)
