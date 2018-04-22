@@ -35,7 +35,7 @@ class App extends React.Component<ComponentProps, {}> {
                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
                 ) : (
                 <Switch>
-                    <Route path="/" component={Counter} />
+                    <Route path="/counter" component={Counter} />
                 </Switch>
             )}
             </React.Fragment>
