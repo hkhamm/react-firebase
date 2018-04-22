@@ -11,6 +11,7 @@ type DocumentReference = firebase.firestore.DocumentReference
 export class AppStore {
 
     @observable public count: number = 0
+    @observable public isSignedIn: boolean = false
 
     constructor() {
         firebase.initializeApp(config)

@@ -1,52 +1,54 @@
+import * as firebase from "firebase"
+import { Unsubscribe, User } from "firebase"
 import { observer } from "mobx-react"
 import * as React from "react"
-import "./App.css"
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import { Route, Switch } from "react-router"
 
-import { AppStore } from "../../stores/AppStore"
-
-interface Props {
-    store: AppStore
-}
+import { ComponentProps } from "../../types/types"
+import Counter from "../Counter/Counter"
 
 @observer
-export default class App extends React.Component<Props, {}> {
+export default class App extends React.Component<ComponentProps, {}> {
 
-    private store: AppStore
+    private unregisterAuthObserver: Unsubscribe
 
-    constructor(props: Props) {
+    constructor(props: ComponentProps) {
         super(props)
-        this.store = props.store
-        this.increment = this.increment.bind(this)
-        this.decrement = this.decrement.bind(this)
     }
 
     public render() {
+        const uiConfig = {
+            signInFlow: "popup",
+            signInSuccessUrl: "/counter",
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
+            ]
+        }
         return (
-            <div style={{
-                width: "50%",
-                margin: "auto",
-                paddingTop: "2rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
-                <div>
-                    <label>Count {this.store.count}</label>
-                    <div><button onClick={this.increment}>Increment</button></div>
-                    <div><button onClick={this.decrement}>Decrement</button></div>
-                </div>
-            </div>
+            <React.Fragment>
+            {!this.props.store.isSignedIn ? (
+                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+                ) : (
+                <Switch>
+                    <Route path="/" component={() => {
+                        return <Counter store={this.props.store} />
+                    }} />
+                </Switch>
+            )}
+            </React.Fragment>
+
         )
     }
 
-    private increment() {
-        this.store.count++
+    public componentDidMount() {
+        this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
+            (user: User) => this.props.store.isSignedIn = !!user
+        )
     }
 
-    private decrement() {
-        if (this.store.count > 0) {
-            this.store.count--
-        }
+    public componentWillUnmount() {
+        this.unregisterAuthObserver()
     }
 
 }
